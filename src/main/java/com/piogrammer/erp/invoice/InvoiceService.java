@@ -117,4 +117,9 @@ public class InvoiceService {
         invoiceItem.setInvoice(invoice);
         return invoiceItem;
     }
+
+    public void updateStock(Product product, int quantity){
+         int newQuantity = product.getQuantity()-quantity;
+         product.setQuantity(newQuantity);
+    }
 }
