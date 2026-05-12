@@ -66,13 +66,13 @@ public class InvoiceService {
 
         for(ItemRequest i : request.getItems()){
 
-            Product product = productRepo.findById(i.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
-
+            Product product = getProduct(i.getProductId());
             validateStock(product, i.getQuantity());
-
+            /*
             product.setQuantity(product.getQuantity() - i.getQuantity());
+            */
 
+            updateStock(product, i.getQuantity());
             InvoiceItem item = createInvoiceItem(product, i.getQuantity(), invoice);
 
             items.add(item);
@@ -122,4 +122,45 @@ public class InvoiceService {
          int newQuantity = product.getQuantity()-quantity;
          product.setQuantity(newQuantity);
     }
+
+
+
+    public Product getProduct(Long productId){
+        return productRepo.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+    }
+
+    public List<Invoice> getAllInvoices(){
+        return invoiceRepo.findAll();
+
+    }
+
+    public Invoice getInvoice(Long id){
+        return invoiceRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Invoice not found"));
+
+    }
+
+    public void restoreStock(Product product, int quantity){
+        int newQuantity = product.getQuantity()+quantity;
+        product.setQuantity(newQuantity);
+    }
+
+
+
+    @Transactional
+    public void deleteInvoice(Long id){
+        Invoice invoice = invoiceRepo.getReferenceById(id);
+        for(InvoiceItem item : invoice.getItems()){
+            Product product = item.getProduct();
+            restoreStock(product,item.getQuantity());
+        }
+
+        invoiceRepo.delete(invoice);
+
+
+    }
+
+
 }

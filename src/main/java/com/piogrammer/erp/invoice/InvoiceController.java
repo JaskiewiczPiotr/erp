@@ -3,6 +3,8 @@ package com.piogrammer.erp.invoice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
@@ -36,4 +38,20 @@ public class InvoiceController {
                 .header("Content-Disposition", "attachment; filename=faktura.pdf")
                 .body(pdf);
     }
+
+    @GetMapping
+    public List<Invoice> getAllInvoices(){
+        return service.getAllInvoices();
+    }
+
+    @GetMapping("/{id}")  ///to spring wyciaga z url parametr i wrzuca go  do metody
+    public Invoice getInvoice(@PathVariable Long id){
+        return service.getInvoice(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteInvoice(@PathVariable Long id){
+        service.deleteInvoice(id);
+    }
+
 }
