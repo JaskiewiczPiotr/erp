@@ -1,8 +1,11 @@
 Register new user:
-<img width="1435" height="898" alt="image" src="https://github.com/user-attachments/assets/91e1bf76-5093-4020-a85e-08fafddf3230" />
-<img width="1441" height="898" alt="image" src="https://github.com/user-attachments/assets/516b94bb-13a2-45f6-be2c-18f6e4cfe920" />
+<img width="1445" height="888" alt="image" src="https://github.com/user-attachments/assets/58ed1b5b-1a3a-4171-8c3c-86ddf86f4947" />
+<img width="1425" height="897" alt="image" src="https://github.com/user-attachments/assets/99024ffa-f6ff-4a21-8cd9-d639586a8cb5" />
 
 
-<img width="1444" height="835" alt="image" src="https://github.com/user-attachments/assets/a2a74de3-09d2-4011-95d2-50eaefd31f82" />
-<img width="1439" height="460" alt="image" src="https://github.com/user-attachments/assets/db2fe768-29f3-4654-8d57-2ff8b1e41fc9" />
+Login user and response JWT token:
+<img width="1414" height="840" alt="image" src="https://github.com/user-attachments/assets/bea2936e-e685-4364-9620-f03b491adea7" />
+<img width="1437" height="844" alt="image" src="https://github.com/user-attachments/assets/744884be-1130-4584-89fa-8a7083aaade7" />
+<img width="1413" height="445" alt="image" src="https://github.com/user-attachments/assets/96ddc11d-542b-4ad9-8259-7d69ab5601c7" />
+
 
