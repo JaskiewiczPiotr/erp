@@ -2,7 +2,9 @@ package com.piogrammer.erp.invoice;
 
 import com.piogrammer.erp.customer.Customer;
 import com.piogrammer.erp.customer.CustomerRepository;
+import com.piogrammer.erp.exception.NotEnoughStockException;
 import com.piogrammer.erp.invoice.*;
+import com.piogrammer.erp.invoice.dto.InvoiceResponse;
 import com.piogrammer.erp.product.Product;
 import com.piogrammer.erp.product.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -44,6 +46,40 @@ public class InvoiceService {
 
         return invoiceRepo.save(invoice); // 🔥 FIX
     }
+
+
+    ///obsługa DTO
+
+    public InvoiceResponse mapToResponse(Invoice invoice){
+
+        InvoiceResponse response = new InvoiceResponse();
+
+        response.setId(invoice.getId());
+
+        response.setCustomerName(
+                invoice.getCustomer().getName()
+        );
+
+        response.setTotal(invoice.getTotal());
+
+        response.setDate(invoice.getDate());
+
+        return response;
+    }
+
+    public List<InvoiceResponse> getAllInvoicesResponse(){
+
+        List<Invoice> invoices = invoiceRepo.findAll();
+
+        List<InvoiceResponse> responses = new ArrayList<>();
+
+        for(Invoice invoice : invoices){
+            responses.add(mapToResponse(invoice));
+        }
+
+        return responses;
+    }
+
 
     // 🔹 pobranie klienta
     public Customer getCustomer(Long id){
@@ -105,7 +141,7 @@ public class InvoiceService {
     public void validateStock(Product product, int requested){
 
         if(product.getQuantity()<requested){
-            throw new RuntimeException("Not enough stock");
+            throw new NotEnoughStockException();
         }
     }
 

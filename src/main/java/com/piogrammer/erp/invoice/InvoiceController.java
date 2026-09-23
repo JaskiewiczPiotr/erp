@@ -1,6 +1,8 @@
 package com.piogrammer.erp.invoice;
 
+import com.piogrammer.erp.invoice.dto.InvoiceResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,15 +42,39 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public List<Invoice> getAllInvoices(){
-        return service.getAllInvoices();
+    public List<InvoiceResponse> getAllInvoices(){
+        return service.getAllInvoicesResponse();
     }
 
+/*
+    @DeleteMapping("/{id}")
+    public void deleteInvoice(@PathVariable Long id){
+        service.deleteInvoice(id);
+    }
+*/
+
+
+    /*
     @GetMapping("/{id}")  ///to spring wyciaga z url parametr i wrzuca go  do metody
     public Invoice getInvoice(@PathVariable Long id){
         return service.getInvoice(id);
+    }*/
+
+    //nowe getInvoice
+    @GetMapping("/{id}")
+    public InvoiceResponse getInvoice(@PathVariable Long id){
+
+        Invoice invoice = service.getInvoice(id);
+
+        return service.mapToResponse(invoice);
     }
 
+    @GetMapping("/test")
+    public String test(){
+        return "ERP WORKS";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteInvoice(@PathVariable Long id){
         service.deleteInvoice(id);

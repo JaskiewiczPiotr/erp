@@ -15,22 +15,35 @@ public class CustomerController {
         this.serivce = serivce;
     }
 
-    public final  CustomerService serivce;
+    public final CustomerService serivce;
 
     @GetMapping
     public List<Customer> getAll() {
         return repo.findAll();
     }
 
+    @GetMapping("/one")
+    public Customer getOne(@RequestParam Long id) {
+        return repo.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
+
     @PostMapping("/bulk")
-    public List<Customer> createManyUsers(@RequestBody List<Customer> customers){
+    public List<Customer> createManyUsers(@RequestBody List<Customer> customers) {
         return serivce.createManyUsers(customers);
     }
 
     @PostMapping("onecustomer")
-    public Customer createOneCustomer(@RequestBody Customer customer){
+    public Customer createOneCustomer(@RequestBody Customer customer) {
         return serivce.createOneUser(customer);
     }
 
+    @PutMapping("/{id}")
+    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer updatedCustomer) {
+        return serivce.updateCustomer(id, updatedCustomer);
+    }
 
+    @DeleteMapping("/{id}")
+    public void deleteCustomer(@PathVariable Long id) {
+        serivce.deleteCustomer(id);
+    }
 }

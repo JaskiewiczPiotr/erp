@@ -18,14 +18,24 @@ public class GlobalExceptionHandler {
 
         return error;
     }
-
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> handleOtherError(RuntimeException ex) {
+    @ExceptionHandler(CustomerNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleCustomerNotFound(CustomerNotFoundException ex) {
 
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
 
         return error;
     }
+
+    @ExceptionHandler(InvalidCustomerDataException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleInvalidCustomer(InvalidCustomerDataException ex) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+
+        return error;
+    }
+
 }
