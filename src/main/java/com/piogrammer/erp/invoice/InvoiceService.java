@@ -2,6 +2,7 @@ package com.piogrammer.erp.invoice;
 
 import com.piogrammer.erp.customer.Customer;
 import com.piogrammer.erp.customer.CustomerRepository;
+import com.piogrammer.erp.errorhandler.InvalidInvoiceId;
 import com.piogrammer.erp.exception.NotEnoughStockException;
 import com.piogrammer.erp.invoice.*;
 import com.piogrammer.erp.invoice.dto.InvoiceResponse;
@@ -173,9 +174,17 @@ public class InvoiceService {
     }
 
     public Invoice getInvoice(Long id){
+        checkIfInvoiceExists(id);
         return invoiceRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Invoice not found"));
+    }
 
+    public void checkIfInvoiceExists(Long id){
+        if (invoiceRepo.existsById(id)) {
+            getInvoice(id);
+        }else {
+            throw new InvalidInvoiceId("Invoice with id " + id + " does not exist");
+        }
     }
 
     public void restoreStock(Product product, int quantity){
@@ -194,8 +203,29 @@ public class InvoiceService {
         }
 
         invoiceRepo.delete(invoice);
+    }
 
+    @Transactional
+    public void updateInvoice(Long id, CreateInvoiceRequest request){
+        Invoice invoice = invoiceRepo.getReferenceById(id);
 
+        // Restore stock for existing items
+        for(InvoiceItem item : invoice.getItems()){
+            Product product = item.getProduct();
+            restoreStock(product,item.getQuantity());
+        }
+
+        // Clear existing items
+        invoice.getItems().clear();
+
+        // Build new items
+        List<InvoiceItem> newItems = buildItems(request, invoice);
+        BigDecimal total = calculateTotal(newItems);
+
+        invoice.setItems(newItems);
+        invoice.setTotal(total);
+
+        invoiceRepo.save(invoice);
     }
 
 

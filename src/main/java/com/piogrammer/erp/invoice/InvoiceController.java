@@ -42,7 +42,7 @@ public class InvoiceController {
     }
 
     @GetMapping
-    public List<InvoiceResponse> getAllInvoices(){
+    public List<InvoiceResponse> getAllInvoices() {
         return service.getAllInvoicesResponse();
     }
 
@@ -62,7 +62,7 @@ public class InvoiceController {
 
     //nowe getInvoice
     @GetMapping("/{id}")
-    public InvoiceResponse getInvoice(@PathVariable Long id){
+    public InvoiceResponse getInvoice(@PathVariable Long id) {
 
         Invoice invoice = service.getInvoice(id);
 
@@ -70,14 +70,19 @@ public class InvoiceController {
     }
 
     @GetMapping("/test")
-    public String test(){
+    public String test() {
         return "ERP WORKS";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public void deleteInvoice(@PathVariable Long id){
+    public void deleteInvoice(@PathVariable Long id) {
         service.deleteInvoice(id);
     }
 
+
+    @PutMapping("/{id}")
+    public void updateInvoice(@PathVariable Long id, @RequestBody CreateInvoiceRequest request) {
+        service.updateInvoice(id, request);
+    }
 }
